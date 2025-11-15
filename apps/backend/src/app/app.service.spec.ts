@@ -14,7 +14,9 @@ describe('AppService', () => {
 
   describe('getData', () => {
     it('should return "Hello, deskbird Coding Challenge - backend!"', () => {
-      expect(service.getData()).toEqual({ message: 'Hello, deskbird Coding Challenge - backend!' });
+      expect(service.getData()).toEqual({
+        message: 'Hello, deskbird Coding Challenge - backend!',
+      });
     });
   });
 });

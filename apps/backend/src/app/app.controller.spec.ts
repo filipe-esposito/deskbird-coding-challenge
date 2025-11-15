@@ -15,7 +15,9 @@ describe('AppController', () => {
   describe('getData', () => {
     it('should return "Hello, deskbird Coding Challenge - backend!"', () => {
       const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({ message: 'Hello, deskbird Coding Challenge - backend!' });
+      expect(appController.getData()).toEqual({
+        message: 'Hello, deskbird Coding Challenge - backend!',
+      });
     });
   });
 });

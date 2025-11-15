@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@deskbird-coding-challenge/backend:build",
+          "buildTarget": "backend:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@deskbird-coding-challenge/backend:build:development"
+            "buildTarget": "backend:build:development"
           },
           "production": {
-            "buildTarget": "@deskbird-coding-challenge/backend:build:production"
+            "buildTarget": "backend:build:production"
           }
         }
       },
@@ -85,7 +85,8 @@
           "passWithNoTests": true
         }
       }
-    }
+    },
+    "name": "backend"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
