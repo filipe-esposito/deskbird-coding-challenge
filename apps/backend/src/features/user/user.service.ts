@@ -36,7 +36,9 @@ export class UserService {
   }
 
   async findAll(): Promise<Partial<UserResponseDto>[]> {
-    const users = await this.userRepository.find();
+    const users = (await this.userRepository.find()).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
 
     return instanceToPlain(
       users.map((user) => new UserResponseDto(user))
