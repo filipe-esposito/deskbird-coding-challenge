@@ -65,22 +65,28 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
+    const userUpdate: Partial<User> = { id };
+
+    if (updateUserDto.name) {
+      userUpdate.name = updateUserDto.name;
+    }
+
+    if (updateUserDto.username) {
+      userUpdate.username = updateUserDto.username;
+    }
+
     if (updateUserDto.password) {
-      updateUserDto.password = await this.encryptPassword(
-        updateUserDto.password
-      );
+      userUpdate.password = await this.encryptPassword(updateUserDto.password);
     }
 
     if (updateUserDto.isAdmin !== undefined) {
-      updateUserDto.isAdmin = this.transformStringToBoolean(
-        updateUserDto.isAdmin
-      );
+      userUpdate.isAdmin = this.transformStringToBoolean(updateUserDto.isAdmin);
     }
 
-    await this.userRepository.update({ id }, updateUserDto);
+    await this.userRepository.update({ id }, userUpdate);
 
     return instanceToPlain(
-      new UserResponseDto(user)
+      new UserResponseDto(userUpdate)
     ) as Partial<UserResponseDto>;
   }
 
