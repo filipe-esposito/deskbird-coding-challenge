@@ -56,56 +56,60 @@
 </p-table>
 
 <p-dialog
-  [header]="isEditMode() ? 'Edit User' : 'Add User'"
+  [header]="isEditMode() ? 'Edit user' : 'Add new user'"
   [visible]="displayEditDialog()"
   (visibleChange)="displayEditDialog.set($event)"
   [modal]="true"
-  [closable]="true"
+  [closable]="false"
+  [style]="{ 'min-width': '25rem' }"
 >
   <div class="p-fluid mb-3">
-    <div class="p-field">
-      <label for="name">Name</label>
+    <div class="p-field mb-3">
+      <label for="name" class="block text-xs font-medium mb-1">Name</label>
       <input
         pInputText
         id="name"
+        class="w-full"
         [ngModel]="selectedUser()?.name"
         (ngModelChange)="updateName($event)"
       />
     </div>
-    <div class="p-field">
-      <label for="username">Username</label>
+    <div class="p-field mb-3">
+      <label for="username" class="block text-xs font-medium mb-1"
+        >Username</label
+      >
       <input
         pInputText
         id="username"
+        class="w-full"
         [ngModel]="selectedUser()?.username"
         (ngModelChange)="updateUsername($event)"
       />
     </div>
-    <div class="p-field">
-      @if (isEditMode()) {
-      <label for="password">New password</label>
-      } @else {
-      <label for="password">Password</label>
-      }
-
-      <!-- TODO prevent newly added users from having their password displayed when being edited -->
+    <div class="p-field mb-3">
+      <label for="password" class="block text-xs font-medium mb-1">
+        @if (isEditMode()) { New password } @else { Password }
+      </label>
       <input
         pInputText
         type="password"
         id="password"
+        class="w-full"
         [ngModel]="selectedUser()?.password"
         (ngModelChange)="updatePassword($event)"
         autocomplete="new-password"
       />
     </div>
-    <div class="p-field">
-      <label for="role">Role</label>
+    <div class="p-field mb-3">
+      <label for="role" class="block text-xs font-medium mb-1">Role</label>
       <p-select
         id="role"
+        class="w-full"
         [ngModel]="selectedUser()?.role"
         (ngModelChange)="updateRole($event)"
         [options]="roleOptions()"
         placeholder="Select a role"
+        appendTo="body"
       >
       </p-select>
     </div>
