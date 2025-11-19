@@ -1,6 +1,6 @@
-<h1>{{ currentUserRole() === userRoles.ADMIN ? 'Manage users' : 'Users' }}</h1>
+<h1>{{ isCurrentUserAdmin() ? 'Manage users' : 'Users' }}</h1>
 
-@if (currentUserRole() === userRoles.ADMIN) {
+@if (isCurrentUserAdmin()) {
 <div class="text-right mb-5">
   <p-button
     (click)="addUser()"
@@ -19,7 +19,7 @@
       <th>Username</th>
       <th>Role</th>
 
-      @if (currentUserRole() === userRoles.ADMIN) {
+      @if (isCurrentUserAdmin()) {
       <th></th>
       }
     </tr>
@@ -29,9 +29,9 @@
     <tr>
       <td>{{ user.name }}</td>
       <td>{{ user.username }}</td>
-      <td>{{ user.role }}</td>
+      <td>{{ user.isAdmin ? 'Admin' : 'Regular' }}</td>
 
-      @if (currentUserRole() === userRoles.ADMIN) {
+      @if (isCurrentUserAdmin()) {
       <td class="text-right w-3">
         <!-- TODO user should not be able to delete themselves -->
         <p-button
@@ -106,7 +106,7 @@
       <p-select
         id="role"
         class="w-full"
-        [ngModel]="selectedUser()?.role"
+        [ngModel]="selectedUser()?.isAdmin"
         (ngModelChange)="updateRole($event)"
         [options]="roleOptions()"
         placeholder="Select a role"

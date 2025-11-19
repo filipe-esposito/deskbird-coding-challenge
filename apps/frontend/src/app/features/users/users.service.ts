@@ -1,6 +1,6 @@
 import { Injectable, inject, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IUser, UserRole } from '../../models/user.model';
+import { IUser } from '../../models/user.model';
 import { BASE_API_URL } from '../../app.config';
 
 @Injectable({
@@ -18,8 +18,7 @@ export class UsersService {
 
   refreshUsers() {
     this.http.get<IUser[]>(this.usersApiUrl).subscribe({
-      next: (users) =>
-        this.users.set(users.map((user) => this.serializerUser(user))),
+      next: (users) => this.users.set(users),
       error: () => this.users.set([]),
     });
   }
@@ -48,13 +47,5 @@ export class UsersService {
     this.http.delete<void>(deleteUserApiUrl).subscribe({
       next: () => this.refreshUsers(),
     });
-  }
-
-  private serializerUser(user: IUser): IUser {
-    return {
-      ...user,
-
-      role: user.isAdmin ? UserRole.ADMIN : UserRole.REGULAR,
-    };
   }
 }

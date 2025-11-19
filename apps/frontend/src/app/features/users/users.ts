@@ -6,7 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
-import { IUser, UserRole } from '../../models/user.model';
+import { IUser } from '../../models/user.model';
 
 @Component({
   selector: 'dcc-users',
@@ -25,25 +25,27 @@ export class UsersComponent {
 
   users: Signal<IUser[]> = this.usersService.getUsers();
   selectedUser = signal<IUser | undefined>(undefined);
-  roleOptions = signal(
-    Object.entries(UserRole).map(([key, value]) => ({
-      label: value,
-      value: key,
-    }))
-  );
   displayEditDialog = signal(false);
   displayDeleteDialog = signal(false);
   isEditMode = signal(false);
+  roleOptions = signal([
+    {
+      label: 'Regular',
+      value: false,
+    },
+    {
+      label: 'Admin',
+      value: true,
+    },
+  ]);
 
-  currentUserRole = signal<UserRole>(UserRole.ADMIN); // TODO replace mocked value with real auth logic
-
-  readonly userRoles = UserRole;
+  isCurrentUserAdmin = signal<boolean>(true); // TODO replace mocked value with real auth logic
 
   addUser() {
     this.selectedUser.set({
       name: '',
       username: '',
-      role: UserRole.REGULAR,
+      isAdmin: false,
       password: '',
     });
     this.isEditMode.set(false);
@@ -85,8 +87,8 @@ export class UsersComponent {
   updatePassword(password: string) {
     this.selectedUser.update((user) => ({ ...user, password }));
   }
-  updateRole(role: UserRole) {
-    this.selectedUser.update((user) => ({ ...user, role }));
+  updateRole(isAdmin: boolean) {
+    this.selectedUser.update((user) => ({ ...user, isAdmin }));
   }
 
   closeDialog() {
