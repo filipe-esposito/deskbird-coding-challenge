@@ -6,6 +6,7 @@ export interface IUser {
   username?: string;
   password?: string;
   role?: UserRole;
+  isAdmin?: boolean;
 }
 
 export enum UserRole {

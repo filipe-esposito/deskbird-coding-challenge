@@ -31,7 +31,8 @@ export class UsersComponent {
       value: key,
     }))
   );
-  displayDialog = signal(false);
+  displayEditDialog = signal(false);
+  displayDeleteDialog = signal(false);
   isEditMode = signal(false);
 
   currentUserRole = signal<UserRole>(UserRole.ADMIN); // TODO replace mocked value with real auth logic
@@ -46,13 +47,32 @@ export class UsersComponent {
       password: '',
     });
     this.isEditMode.set(false);
-    this.displayDialog.set(true);
+    this.displayEditDialog.set(true);
+  }
+
+  confirmDeleteUser(user: IUser) {
+    this.selectedUser.set(user);
+    this.displayDeleteDialog.set(true);
+  }
+
+  deleteUserConfirmed() {
+    const user = this.selectedUser();
+    if (user && user.id) {
+      this.usersService.deleteUser(user.id);
+    }
+    this.displayDeleteDialog.set(false);
+    this.selectedUser.set(undefined);
+  }
+
+  cancelDeleteUser() {
+    this.displayDeleteDialog.set(false);
+    this.selectedUser.set(undefined);
   }
 
   editUser(user: IUser) {
     this.selectedUser.set({ ...user });
     this.isEditMode.set(true);
-    this.displayDialog.set(true);
+    this.displayEditDialog.set(true);
   }
 
   // TODO replace these methods with saving user data at once? (maybe using a form?)
@@ -70,7 +90,7 @@ export class UsersComponent {
   }
 
   closeDialog() {
-    this.displayDialog.set(false);
+    this.displayEditDialog.set(false);
     this.selectedUser.set(undefined);
   }
 
