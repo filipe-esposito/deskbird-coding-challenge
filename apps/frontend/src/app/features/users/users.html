@@ -1,0 +1,107 @@
+<h1>Users</h1>
+
+@if (currentUserRole() === userRoles.ADMIN) {
+<div class="text-right mb-5">
+  <p-button (click)="addUser()" label="Add user" icon="pi pi-plus"></p-button>
+</div>
+}
+
+<!-- TODO make table responsible (content inside rows shifted vertically on Mobile) -->
+<p-table [value]="users()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Role</th>
+      @if (currentUserRole() === userRoles.ADMIN) {
+      <th></th>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.username }}</td>
+      <!-- TODO fix display of `role` of newly added users -->
+      <td>{{ user.role }}</td>
+      @if (currentUserRole() === userRoles.ADMIN) {
+      <td class="text-right w-2">
+        <p-button
+          label="Edit"
+          icon="pi pi-pencil"
+          size="small"
+          (click)="editUser(user)"
+        >
+        </p-button>
+      </td>
+      }
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [header]="isEditMode() ? 'Edit User' : 'Add User'"
+  [visible]="displayDialog()"
+  (visibleChange)="displayDialog.set($event)"
+  [modal]="true"
+  [closable]="true"
+>
+  <div class="p-fluid mb-3">
+    <div class="p-field">
+      <label for="name">Name</label>
+      <input
+        pInputText
+        id="name"
+        [ngModel]="selectedUser()?.name"
+        (ngModelChange)="updateName($event)"
+      />
+    </div>
+    <div class="p-field">
+      <label for="username">Username</label>
+      <input
+        pInputText
+        id="username"
+        [ngModel]="selectedUser()?.username"
+        (ngModelChange)="updateUsername($event)"
+      />
+    </div>
+    <div class="p-field">
+      @if (isEditMode()) {
+      <label for="password">New password</label>
+      } @else {
+      <label for="password">Password</label>
+      }
+      <!-- TODO prevent newly added users from having their password displayed when being edited -->
+      <input
+        pInputText
+        type="password"
+        id="password"
+        [ngModel]="selectedUser()?.password"
+        (ngModelChange)="updatePassword($event)"
+        autocomplete="new-password"
+      />
+    </div>
+    <div class="p-field">
+      <label for="role">Role</label>
+      <p-select
+        id="role"
+        [ngModel]="selectedUser()?.role"
+        (ngModelChange)="updateRole($event)"
+        [options]="roleOptions()"
+        placeholder="Select a role"
+      >
+      </p-select>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (click)="closeDialog()"
+    ></p-button>
+    <p-button [label]="isEditMode() ? 'Save' : 'Create'" (click)="saveUser()">
+    </p-button>
+  </ng-template>
+</p-dialog>

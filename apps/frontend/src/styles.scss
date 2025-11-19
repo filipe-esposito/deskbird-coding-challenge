@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'primeicons/primeicons.css';
+
+:root {
+  --p-primary-color: #7646ff;
+  --p-primary-contrast-color: #ffffff;
+  --p-primary-50: #f3f0ff;
+  --p-primary-100: #e4ddff;
+  --p-primary-200: #ccbfff;
+  --p-primary-300: #ad94ff;
+  --p-primary-400: #9875ff;
+  --p-primary-500: #7646ff;
+  --p-primary-600: #6b3ee6;
+  --p-primary-700: #5d35cc;
+  --p-primary-800: #4d2db3;
+  --p-primary-900: #3f2799;
+  --p-primary-950: #261866;
+}
+
+html {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
