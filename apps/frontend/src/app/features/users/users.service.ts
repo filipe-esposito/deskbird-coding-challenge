@@ -1,35 +1,43 @@
-import { Injectable, Signal, signal } from '@angular/core';
-import { IUser, UserRole } from '../../models/user.model';
+import { Injectable, inject, Signal, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { IUser } from '../../models/user.model';
+import { BASE_API_URL } from '../../app.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private users = signal([
-    { name: 'John Doe', username: 'john.doe', role: UserRole.ADMIN },
-    { name: 'Jane Smith', username: 'jane.smith', role: UserRole.REGULAR },
-    { name: 'Bob Johnson', username: 'bob.johnson', role: UserRole.REGULAR },
-  ]);
+  private http = inject(HttpClient);
+  private usersApiUrl = `${BASE_API_URL}/users`;
+
+  private users = signal<IUser[]>([]);
+
+  constructor() {
+    this.refreshUsers();
+  }
+
+  refreshUsers() {
+    this.http.get<IUser[]>(this.usersApiUrl).subscribe({
+      next: (users) => this.users.set(users),
+      error: () => this.users.set([]),
+    });
+  }
 
   getUsers(): Signal<IUser[]> {
     return this.users.asReadonly();
   }
 
-  addUser(newUser: any) {
-    this.users.update((users) => [...users, newUser]);
+  addUser(newUser: IUser) {
+    this.http.post<IUser>(this.usersApiUrl, newUser).subscribe({
+      next: () => this.refreshUsers(),
+    });
   }
 
-  updateUser(updatedUser: any) {
-    this.users.update((users) => {
-      const index = users.findIndex((u) => u.username === updatedUser.username);
+  updateUser(updatedUser: IUser) {
+    const updateUserApiUrl = `${this.usersApiUrl}/${updatedUser.id}`;
 
-      if (index !== -1) {
-        const newUsers = [...users];
-        newUsers[index] = { ...updatedUser };
-        return newUsers;
-      }
-
-      return users;
+    this.http.patch<IUser>(updateUserApiUrl, updatedUser).subscribe({
+      next: () => this.refreshUsers(),
     });
   }
 }

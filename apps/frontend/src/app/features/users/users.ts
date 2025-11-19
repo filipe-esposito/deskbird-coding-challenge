@@ -55,7 +55,7 @@ export class UsersComponent {
     this.displayDialog.set(true);
   }
 
-  // TODO replace these methods with saving user data at once?
+  // TODO replace these methods with saving user data at once? (maybe using a form?)
   updateName(name: string) {
     this.selectedUser.update((user) => ({ ...user, name }));
   }
@@ -76,6 +76,10 @@ export class UsersComponent {
 
   saveUser() {
     const currentSelectedUser = this.selectedUser();
+
+    if (!currentSelectedUser) {
+      return;
+    }
 
     // TODO add form validations
 

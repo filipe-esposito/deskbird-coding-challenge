@@ -9,6 +9,13 @@ import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
 import Lara from '@primeuix/themes/lara';
 import { appRoutes } from './app.routes';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+
+// TODO move to a safe place
+export const BASE_API_URL = 'http://localhost:3000/api';
 
 const customPreset = definePreset(Lara, {
   semantic: {
@@ -23,9 +30,9 @@ const customPreset = definePreset(Lara, {
       700: '{violet.700}',
       800: '{violet.800}',
       900: '{violet.900}',
-      950: '{violet.950}'
-    }
-  }
+      950: '{violet.950}',
+    },
+  },
 });
 
 export const appConfig: ApplicationConfig = {
@@ -40,9 +47,10 @@ export const appConfig: ApplicationConfig = {
         options: {
           prefix: 'p',
           darkModeSelector: 'system',
-          cssLayer: false
-        }
+          cssLayer: false,
+        },
       },
     }),
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 };
