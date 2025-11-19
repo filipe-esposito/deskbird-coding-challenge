@@ -33,6 +33,7 @@
 
       @if (currentUserRole() === userRoles.ADMIN) {
       <td class="text-right w-3">
+        <!-- TODO user should not be able to delete themselves -->
         <p-button
           label="Delete"
           icon="pi pi-trash"
@@ -61,7 +62,7 @@
   (visibleChange)="displayEditDialog.set($event)"
   [modal]="true"
   [closable]="false"
-  [style]="{ 'min-width': '25rem' }"
+  [style]="{ 'width': '25rem', 'max-width': 'calc(100vw - 3rem)' }"
 >
   <div class="p-fluid mb-3">
     <div class="p-field mb-3">
