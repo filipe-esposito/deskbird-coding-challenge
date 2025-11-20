@@ -1,14 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { instanceToPlain } from 'class-transformer';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
-
-const BYCRIPT_SALT_ROUNDS = 12;
+import { encryptPassword } from '../../utils/password-encryption';
 
 @Injectable()
 export class UserService {
@@ -26,7 +24,7 @@ export class UserService {
     user.username = createUserDto.username;
     user.isAdmin = this.transformStringToBoolean(createUserDto.isAdmin);
 
-    user.password = await this.encryptPassword(createUserDto.password);
+    user.password = await encryptPassword(createUserDto.password);
 
     const savedUser = await this.userRepository.save(user);
 
@@ -78,7 +76,7 @@ export class UserService {
     }
 
     if (updateUserDto.password) {
-      userUpdate.password = await this.encryptPassword(updateUserDto.password);
+      userUpdate.password = await encryptPassword(updateUserDto.password);
     }
 
     if (updateUserDto.isAdmin !== undefined) {
@@ -102,9 +100,5 @@ export class UserService {
     if (value === 'true') return true;
 
     return false;
-  }
-
-  private async encryptPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, BYCRIPT_SALT_ROUNDS);
   }
 }
