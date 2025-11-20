@@ -15,7 +15,8 @@ import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
 import { IUser } from '../../models/user.model';
 import { of } from 'rxjs';
-import { LoginService } from '../login/login.service';
+import { AuthService } from '../auth/login.service';
+import { LogoutComponent } from '../auth/logout';
 
 @Component({
   selector: 'dcc-users',
@@ -27,11 +28,12 @@ import { LoginService } from '../login/login.service';
     InputTextModule,
     SelectModule,
     ReactiveFormsModule,
+    LogoutComponent,
   ],
 })
 export class UsersComponent {
   private usersService = inject(UsersService);
-  private loginService = inject(LoginService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
   users: Signal<IUser[]> = this.usersService.getUsers();
@@ -50,7 +52,7 @@ export class UsersComponent {
     },
   ]);
 
-  currentUser: Signal<IUser | undefined> = this.loginService.getCurrentUser();
+  currentUser: Signal<IUser | undefined> = this.authService.getCurrentUser();
 
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],

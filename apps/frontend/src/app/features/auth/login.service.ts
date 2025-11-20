@@ -7,7 +7,7 @@ import { IUser } from '../../models/user.model';
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class AuthService {
   private http = inject(HttpClient);
   private loginApiUrl = `${BASE_API_URL}/login`;
 
@@ -24,5 +24,9 @@ export class LoginService {
 
   getCurrentUser(): Signal<IUser | undefined> {
     return this.currentUser;
+  }
+
+  logout() {
+    this.currentUser.set(undefined);
   }
 }

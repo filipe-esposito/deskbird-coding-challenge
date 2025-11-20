@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginService } from './login.service';
+import { AuthService } from './login.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class LoginFormComponent {
   private fb = inject(FormBuilder);
-  private loginService = inject(LoginService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   loginForm: FormGroup = this.fb.group({
@@ -47,9 +47,9 @@ export class LoginFormComponent {
 
     const password = this.loginForm.value.password;
 
-    this.loginService.login(username, password).subscribe({
+    this.authService.login(username, password).subscribe({
       next: (res) => {
-        this.loginService.setCurrentUser(res.user);
+        this.authService.setCurrentUser(res.user);
         this.router.navigate(['/users']);
       },
       error: (error: HttpErrorResponse) => {

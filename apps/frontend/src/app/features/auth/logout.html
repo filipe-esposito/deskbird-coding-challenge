@@ -1,0 +1,31 @@
+<p-button
+  (click)="logout()"
+  label="Logout"
+  size="small"
+  icon="pi pi-sign-out"
+  severity="danger"
+></p-button>
+
+<p-dialog
+  header="Confirm logout"
+  [visible]="displayDialog()"
+  modal="true"
+  [closable]="false"
+>
+  <p>Are you sure you want to logout?</p>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Yes"
+      icon="pi pi-check"
+      severity="danger"
+      (click)="logoutConfirmed()"
+    ></p-button>
+    <p-button
+      label="No"
+      icon="pi pi-times"
+      severity="secondary"
+      (click)="displayDialog.set(false)"
+    ></p-button>
+  </ng-template>
+</p-dialog>

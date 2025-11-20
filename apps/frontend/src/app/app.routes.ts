@@ -9,7 +9,7 @@ export const appRoutes: Route[] = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./features/login/login-form').then((m) => m.LoginFormComponent),
+      import('./features/auth/login-form').then((m) => m.LoginFormComponent),
   },
   {
     path: 'users',
