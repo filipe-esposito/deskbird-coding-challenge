@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 
 @Component({
-  imports: [RouterModule, ButtonModule],
+  imports: [RouterModule],
   selector: 'dcc-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
