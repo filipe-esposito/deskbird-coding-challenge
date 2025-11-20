@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+// TODO replace with interfaces from shared-lib
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()

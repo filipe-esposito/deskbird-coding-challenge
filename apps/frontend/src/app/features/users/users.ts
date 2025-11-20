@@ -1,4 +1,4 @@
-import { Component, signal, inject, Signal } from '@angular/core';
+import { Component, signal, inject, Signal, computed } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -49,12 +49,9 @@ export class UsersComponent {
   ]);
 
   // TODO replace mocked value with real auth logic
-  currentUser = signal<IUser>({
-    id: 21,
-    name: 'Current User',
-    username: 'current.user',
-    isAdmin: true,
-  });
+  currentUser: Signal<IUser | undefined> = computed(() =>
+    this.users().find((u) => u.username === 'test_admin')
+  );
 
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],

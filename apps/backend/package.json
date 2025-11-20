@@ -84,6 +84,13 @@
           "jestConfig": "apps/backend/jest.config.ts",
           "passWithNoTests": true
         }
+      },
+      "seed": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node src/seed/seed.ts",
+          "cwd": "apps/backend"
+        }
       }
     },
     "name": "backend"
