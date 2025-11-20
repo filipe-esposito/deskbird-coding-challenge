@@ -1,4 +1,6 @@
-<h1>{{ currentUser().isAdmin ? 'Manage users' : 'Users' }}</h1>
+<h1>Welcome, {{ currentUser().name }}!</h1>
+
+<h2>{{ currentUser().isAdmin ? 'Manage users' : 'Listing all users' }}</h2>
 
 @if (currentUser().isAdmin) {
 <div class="text-right mb-5">
