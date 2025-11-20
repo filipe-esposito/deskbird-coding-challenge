@@ -3,10 +3,18 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  AbstractControl,
+  ReactiveFormsModule,
+  AsyncValidatorFn,
+} from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
 import { IUser } from '../../models/user.model';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'dcc-users',
@@ -17,11 +25,12 @@ import { IUser } from '../../models/user.model';
     DialogModule,
     InputTextModule,
     SelectModule,
-    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class UsersComponent {
   private usersService = inject(UsersService);
+  private fb = inject(FormBuilder);
 
   users: Signal<IUser[]> = this.usersService.getUsers();
   selectedUser = signal<IUser | undefined>(undefined);
@@ -41,6 +50,13 @@ export class UsersComponent {
 
   isCurrentUserAdmin = signal<boolean>(true); // TODO replace mocked value with real auth logic
 
+  userForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    username: ['', [Validators.required, this.noSpaceValidator]],
+    password: ['', [], [this.passwordRequiredAsyncValidator()]],
+    isAdmin: [false, Validators.required],
+  });
+
   addUser() {
     this.selectedUser.set({
       name: '',
@@ -48,7 +64,10 @@ export class UsersComponent {
       isAdmin: false,
       password: '',
     });
+    this.userForm.reset();
+
     this.isEditMode.set(false);
+    this.updatePasswordValidator();
     this.displayEditDialog.set(true);
   }
 
@@ -59,9 +78,11 @@ export class UsersComponent {
 
   deleteUserConfirmed() {
     const user = this.selectedUser();
+
     if (user && user.id) {
       this.usersService.deleteUser(user.id);
     }
+
     this.displayDeleteDialog.set(false);
     this.selectedUser.set(undefined);
   }
@@ -73,44 +94,71 @@ export class UsersComponent {
 
   editUser(user: IUser) {
     this.selectedUser.set({ ...user });
+    this.userForm.reset({
+      name: user.name,
+      username: user.username,
+      isAdmin: user.isAdmin,
+      password: '',
+    });
+
     this.isEditMode.set(true);
+    this.updatePasswordValidator();
     this.displayEditDialog.set(true);
   }
 
-  // TODO replace these methods with saving user data at once? (maybe using a form?)
-  updateName(name: string) {
-    this.selectedUser.update((user) => ({ ...user, name }));
-  }
-  updateUsername(username: string) {
-    this.selectedUser.update((user) => ({ ...user, username }));
-  }
-  updatePassword(password: string) {
-    this.selectedUser.update((user) => ({ ...user, password }));
-  }
-  updateRole(isAdmin: boolean) {
-    this.selectedUser.update((user) => ({ ...user, isAdmin }));
-  }
-
-  closeDialog() {
+  closeEditDialog() {
     this.displayEditDialog.set(false);
     this.selectedUser.set(undefined);
+    this.userForm.reset();
   }
 
   saveUser() {
-    const currentSelectedUser = this.selectedUser();
-
-    if (!currentSelectedUser) {
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
       return;
     }
 
-    // TODO add form validations
+    const formValue = this.userForm.value as IUser;
 
     if (this.isEditMode()) {
-      this.usersService.updateUser(currentSelectedUser);
+      const userToUpdate = { ...this.selectedUser(), ...formValue };
+      this.usersService.updateUser(userToUpdate);
     } else {
-      this.usersService.addUser(currentSelectedUser);
+      this.usersService.addUser(formValue);
     }
 
-    this.closeDialog();
+    this.closeEditDialog();
+  }
+
+  // Helper for error display on the template
+  shouldDisplayError(control: AbstractControl | null) {
+    return control && control.invalid && (control.dirty || control.touched);
+  }
+
+  private noSpaceValidator(control: AbstractControl) {
+    const value = control.value as string;
+    if (value && value.includes(' ')) {
+      return { noSpace: true };
+    }
+    return null;
+  }
+
+  // Async validator for the `password` field
+  private passwordRequiredAsyncValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      if (!this.isEditMode() && !control.value) {
+        return of({ required: true });
+      }
+
+      return of(null);
+    };
+  }
+
+  // Helper for async password validation
+  private updatePasswordValidator() {
+    this.userForm
+      .get('password')
+      ?.setAsyncValidators(this.passwordRequiredAsyncValidator());
+    this.userForm.get('password')?.updateValueAndValidity();
   }
 }

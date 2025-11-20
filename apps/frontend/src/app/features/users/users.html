@@ -33,7 +33,7 @@
 
       @if (isCurrentUserAdmin()) {
       <td class="text-right w-3">
-        <!-- TODO user should not be able to delete themselves -->
+        <!-- TODO users should not be able to delete themselves -->
         <p-button
           label="Delete"
           icon="pi pi-trash"
@@ -61,19 +61,22 @@
   [visible]="displayEditDialog()"
   (visibleChange)="displayEditDialog.set($event)"
   [modal]="true"
-  [closable]="false"
+  [dismissableMask]="true"
   [style]="{ 'width': '25rem', 'max-width': 'calc(100vw - 3rem)' }"
 >
-  <div class="p-fluid mb-3">
+  <form [formGroup]="userForm" (ngSubmit)="saveUser()">
     <div class="p-field mb-3">
       <label for="name" class="block text-xs font-medium mb-1">Name</label>
       <input
         pInputText
         id="name"
         class="w-full"
-        [ngModel]="selectedUser()?.name"
-        (ngModelChange)="updateName($event)"
+        formControlName="name"
+        [invalid]="shouldDisplayError(userForm.get('name'))"
       />
+      @if (shouldDisplayError(userForm.get('name'))) {
+      <div class="text-red-300 text-xs mt-1">Name is required.</div>
+      }
     </div>
     <div class="p-field mb-3">
       <label for="username" class="block text-xs font-medium mb-1"
@@ -83,48 +86,63 @@
         pInputText
         id="username"
         class="w-full"
-        [ngModel]="selectedUser()?.username"
-        (ngModelChange)="updateUsername($event)"
+        formControlName="username"
+        [invalid]="shouldDisplayError(userForm.get('username'))"
       />
+      @if (shouldDisplayError(userForm.get('username'))) {
+      <div class="text-red-300 text-xs mt-1">
+        @if (userForm.get('username')?.errors?.['required']) { Username is
+        required. } @if (userForm.get('username')?.errors?.['noSpace']) {
+        Username cannot contain spaces. }
+      </div>
+      }
     </div>
     <div class="p-field mb-3">
-      <label for="password" class="block text-xs font-medium mb-1">
-        @if (isEditMode()) { New password } @else { Password }
-      </label>
+      <label for="password" class="block text-xs font-medium mb-1"
+        >{{ isEditMode() ? 'Update password' : 'Password' }}</label
+      >
       <input
         pInputText
         type="password"
         id="password"
         class="w-full"
-        [ngModel]="selectedUser()?.password"
-        (ngModelChange)="updatePassword($event)"
+        formControlName="password"
         autocomplete="new-password"
+        [invalid]="shouldDisplayError(userForm.get('password'))"
       />
+      @if (shouldDisplayError(userForm.get('password'))) {
+      <div class="text-red-300 text-xs mt-1">Password is required.</div>
+      }
     </div>
     <div class="p-field mb-3">
       <label for="role" class="block text-xs font-medium mb-1">Role</label>
       <p-select
         id="role"
         class="w-full"
-        [ngModel]="selectedUser()?.isAdmin"
-        (ngModelChange)="updateRole($event)"
+        formControlName="isAdmin"
         [options]="roleOptions()"
-        placeholder="Select a role"
+        placeholder="Select..."
         appendTo="body"
-      >
-      </p-select>
+        [invalid]="shouldDisplayError(userForm.get('isAdmin'))"
+      ></p-select>
+      @if (shouldDisplayError(userForm.get('isAdmin'))) {
+      <div class="text-red-300 text-xs mt-1">Role is required.</div>
+      }
     </div>
-  </div>
 
-  <ng-template pTemplate="footer">
-    <p-button
-      label="Cancel"
-      severity="secondary"
-      (click)="closeDialog()"
-    ></p-button>
-    <p-button [label]="isEditMode() ? 'Save' : 'Create'" (click)="saveUser()">
-    </p-button>
-  </ng-template>
+    <div class="p-dialog-footer flex justify-end gap-2 mt-4 px-0">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="closeEditDialog()"
+        type="button"
+      ></p-button>
+      <p-button
+        label="{{ isEditMode() ? 'Save' : 'Create' }}"
+        type="submit"
+      ></p-button>
+    </div>
+  </form>
 </p-dialog>
 
 <p-dialog
@@ -132,7 +150,7 @@
   [visible]="displayDeleteDialog()"
   (visibleChange)="displayDeleteDialog.set($event)"
   [modal]="true"
-  [closable]="false"
+  [dismissableMask]="true"
 >
   <div>
     Are you sure you want to delete user <b>{{ selectedUser()?.name }}</b>?
