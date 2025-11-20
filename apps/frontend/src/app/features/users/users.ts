@@ -13,9 +13,9 @@ import {
 } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
-import { IUser } from '../../models/user.model';
+import { IUser } from '../../shared/models/user.model';
 import { of } from 'rxjs';
-import { AuthService } from '../auth/login.service';
+import { AuthService } from '../auth/auth.service';
 import { LogoutComponent } from '../auth/logout';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Controller, Post, Body, HttpCode } from '@nestjs/common';
-import { LoginService } from './login.service';
+import { LoginService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { instanceToPlain } from 'class-transformer';
 import { UserResponseDto } from '../user/dto/user-response.dto';

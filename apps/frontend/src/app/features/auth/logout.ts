@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { AuthService } from './login.service';
+import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
 @Component({
