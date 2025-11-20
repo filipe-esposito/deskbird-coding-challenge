@@ -1,4 +1,4 @@
-import { Component, signal, inject, Signal, computed } from '@angular/core';
+import { Component, signal, inject, Signal } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -15,6 +15,7 @@ import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
 import { IUser } from '../../models/user.model';
 import { of } from 'rxjs';
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'dcc-users',
@@ -30,6 +31,7 @@ import { of } from 'rxjs';
 })
 export class UsersComponent {
   private usersService = inject(UsersService);
+  private loginService = inject(LoginService);
   private fb = inject(FormBuilder);
 
   users: Signal<IUser[]> = this.usersService.getUsers();
@@ -48,10 +50,7 @@ export class UsersComponent {
     },
   ]);
 
-  // TODO replace mocked value with real auth logic
-  currentUser: Signal<IUser | undefined> = computed(() =>
-    this.users().find((u) => u.username === 'test_admin')
-  );
+  currentUser: Signal<IUser | undefined> = this.loginService.getCurrentUser();
 
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],

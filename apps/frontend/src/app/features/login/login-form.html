@@ -1,0 +1,39 @@
+<h1 class="mb-5">Welcome to the deskbird Coding Challenge!</h1>
+
+<div class="p-fluid p-formgrid p-grid">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="p-field mb-3">
+      <label for="username" class="block text-sm mb-1">Username</label>
+      <input
+        id="username"
+        type="text"
+        pInputText
+        formControlName="username"
+        class="w-full"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="password" class="block text-sm mb-1">Password</label>
+      <input
+        id="password"
+        type="password"
+        pInputText
+        formControlName="password"
+        class="w-full"
+      />
+    </div>
+
+    @if (errorMessage) {
+    <div class="text-red-300">{{ errorMessage }}</div>
+    }
+
+    <div class="text-center mt-5">
+      <p-button
+        type="submit"
+        label="Login"
+        icon="pi pi-sign-in"
+        [disabled]="loginForm.invalid"
+      ></p-button>
+    </div>
+  </form>
+</div>
