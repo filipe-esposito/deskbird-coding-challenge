@@ -1,6 +1,6 @@
-<h1>{{ isCurrentUserAdmin() ? 'Manage users' : 'Users' }}</h1>
+<h1>{{ currentUser().isAdmin ? 'Manage users' : 'Users' }}</h1>
 
-@if (isCurrentUserAdmin()) {
+@if (currentUser().isAdmin) {
 <div class="text-right mb-5">
   <p-button
     (click)="addUser()"
@@ -19,7 +19,7 @@
       <th>Username</th>
       <th>Role</th>
 
-      @if (isCurrentUserAdmin()) {
+      @if (currentUser().isAdmin) {
       <th></th>
       }
     </tr>
@@ -31,9 +31,9 @@
       <td>{{ user.username }}</td>
       <td>{{ user.isAdmin ? 'Admin' : 'Regular' }}</td>
 
-      @if (isCurrentUserAdmin()) {
+      @if (currentUser().isAdmin) {
       <td class="text-right w-3">
-        <!-- TODO users should not be able to delete themselves -->
+        @if (user.id !== currentUser().id) {
         <p-button
           label="Delete"
           icon="pi pi-trash"
@@ -42,6 +42,7 @@
           class="mr-2"
           (click)="confirmDeleteUser(user)"
         ></p-button>
+        }
 
         <p-button
           label="Edit"

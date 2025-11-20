@@ -48,7 +48,13 @@ export class UsersComponent {
     },
   ]);
 
-  isCurrentUserAdmin = signal<boolean>(true); // TODO replace mocked value with real auth logic
+  // TODO replace mocked value with real auth logic
+  currentUser = signal<IUser>({
+    id: 21,
+    name: 'Current User',
+    username: 'current.user',
+    isAdmin: true,
+  });
 
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
