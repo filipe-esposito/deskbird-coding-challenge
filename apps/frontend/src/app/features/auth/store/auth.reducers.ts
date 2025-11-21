@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
-import { IUser } from '../../../shared/models/user.model';
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 
 const userFromStorage: string | null = localStorage.getItem('user');
 const initialUser: IUser | null = userFromStorage

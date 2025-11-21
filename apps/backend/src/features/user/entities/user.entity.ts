@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-// TODO replace with interfaces from shared-lib
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 
 @Entity()
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn()
   id!: number;
 

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IUser } from '../../../shared/models/user.model';
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 
 export const login = createAction('[Auth] Login', props<{ user: IUser }>());
 

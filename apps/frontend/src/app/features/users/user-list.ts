@@ -5,7 +5,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { UsersService } from './users.service';
-import { IUser } from '../../shared/models/user.model';
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { AuthService } from '../auth/auth.service';
 import { LogoutComponent } from '../auth/logout';
 import { EditUserComponent } from './edit/edit-user';

@@ -1,5 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { IUser } from '../../../shared/models/user.model';
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { UsersService } from '../users.service';

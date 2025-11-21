@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BASE_API_URL } from '../../app.config';
-import { IUser } from '../../shared/models/user.model';
+import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { select, Store } from '@ngrx/store';
 import * as AuthActions from './store/auth.actions';
 import { selectAuthUser } from './store/auth.selectors';
