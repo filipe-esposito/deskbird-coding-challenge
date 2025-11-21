@@ -1,7 +1,6 @@
-import { inject, Injectable, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { AuthService } from '../../features/auth/auth.service';
-import { IUser } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class NotAuthGuard implements CanActivate {
@@ -9,8 +8,8 @@ export class NotAuthGuard implements CanActivate {
   private router = inject(Router);
 
   canActivate(): boolean | UrlTree {
-    const user: Signal<IUser | null> = this.authService.getCurrentUser();
-
-    return user() ? this.router.createUrlTree(['/users']) : true;
+    return this.authService.isUserLoggedIn()
+      ? this.router.createUrlTree(['/users'])
+      : true;
   }
 }

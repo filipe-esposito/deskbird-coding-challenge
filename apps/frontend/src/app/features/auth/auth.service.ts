@@ -32,6 +32,12 @@ export class AuthService {
     });
   }
 
+  isUserLoggedIn(): boolean {
+    const user: Signal<IUser | null> = this.getCurrentUser();
+
+    return !!user();
+  }
+
   logout() {
     this.store.dispatch(AuthActions.logout());
   }
