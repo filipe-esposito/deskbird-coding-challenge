@@ -13,6 +13,10 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { authReducer } from './features/auth/store/auth.reducers';
+import { AuthEffects } from './features/auth/store/auth.effects';
 
 // TODO move to a safe place
 export const BASE_API_URL = 'http://localhost:3000/api';
@@ -52,5 +56,8 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideHttpClient(withInterceptorsFromDi()),
+    provideRouter([]),
+    provideStore({ auth: authReducer }),
+    provideEffects([AuthEffects]),
   ],
 };

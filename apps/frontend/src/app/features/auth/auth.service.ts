@@ -1,8 +1,12 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, Injector, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { BASE_API_URL } from '../../app.config';
 import { IUser } from '../../shared/models/user.model';
+import { select, Store } from '@ngrx/store';
+import * as AuthActions from './store/auth.actions';
+import { selectAuthUser } from './store/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -10,23 +14,25 @@ import { IUser } from '../../shared/models/user.model';
 export class AuthService {
   private http = inject(HttpClient);
   private loginApiUrl = `${BASE_API_URL}/login`;
+  private store = inject(Store);
+  private injector = inject(Injector);
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(this.loginApiUrl, { username, password });
   }
 
-  // TODO replace with NgRx store
-  private currentUser = signal<IUser | undefined>(undefined);
-
   setCurrentUser(user: IUser) {
-    this.currentUser.set(user);
+    this.store.dispatch(AuthActions.login({ user }));
   }
 
-  getCurrentUser(): Signal<IUser | undefined> {
-    return this.currentUser;
+  getCurrentUser(): Signal<IUser | null> {
+    return toSignal(this.store.pipe(select(selectAuthUser)), {
+      injector: this.injector,
+      initialValue: null,
+    });
   }
 
   logout() {
-    this.currentUser.set(undefined);
+    this.store.dispatch(AuthActions.logout());
   }
 }

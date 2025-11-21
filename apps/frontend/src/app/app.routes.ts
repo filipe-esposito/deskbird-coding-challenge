@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth.guard';
-import { LoginRedirectGuard } from './shared/guards/login-redirect.guard';
+import { NotAuthGuard } from './shared/guards/not-auth.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -10,7 +10,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'login',
-    canActivate: [LoginRedirectGuard],
+    canActivate: [NotAuthGuard],
     loadComponent: () =>
       import('./features/auth/login-form').then((m) => m.LoginFormComponent),
   },

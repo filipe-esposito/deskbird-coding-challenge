@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,17 +9,16 @@ import { AuthService } from './auth.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'dcc-login',
   templateUrl: './login-form.html',
   imports: [ReactiveFormsModule, ButtonModule, InputTextModule],
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);
 
   loginForm: FormGroup = this.fb.group({
     username: ['', Validators.required],
@@ -27,7 +26,27 @@ export class LoginFormComponent {
   });
   errorMessage = '';
 
-  validateFields(): boolean {
+  onSubmit() {
+    if (!this.validateFields()) return;
+
+    let username = this.loginForm.value.username;
+    username = username.trim();
+
+    const password = this.loginForm.value.password;
+
+    this.subscriptions.add(
+      this.authService.login(username, password).subscribe({
+        next: (res) => {
+          this.authService.setCurrentUser(res.user);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage = error.error.message;
+        },
+      })
+    );
+  }
+
+  private validateFields(): boolean {
     if (this.loginForm.invalid) {
       this.errorMessage = 'Both fields are required.';
 
@@ -39,22 +58,9 @@ export class LoginFormComponent {
     return true;
   }
 
-  onSubmit() {
-    if (!this.validateFields()) return;
+  private subscriptions = new Subscription();
 
-    let username = this.loginForm.value.username;
-    username = username.trim();
-
-    const password = this.loginForm.value.password;
-
-    this.authService.login(username, password).subscribe({
-      next: (res) => {
-        this.authService.setCurrentUser(res.user);
-        this.router.navigate(['/users']);
-      },
-      error: (error: HttpErrorResponse) => {
-        this.errorMessage = error.error.message;
-      },
-    });
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

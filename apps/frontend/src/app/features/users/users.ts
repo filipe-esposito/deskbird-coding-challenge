@@ -52,7 +52,7 @@ export class UsersComponent {
     },
   ]);
 
-  currentUser: Signal<IUser | undefined> = this.authService.getCurrentUser();
+  currentUser: Signal<IUser | null> = this.authService.getCurrentUser();
 
   userForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
