@@ -18,6 +18,6 @@ export const appRoutes: Route[] = [
     path: 'users',
     canActivate: [AuthGuard],
     loadComponent: () =>
-      import('./features/users/users').then((m) => m.UsersComponent),
+      import('./features/users/user-list').then((m) => m.UserListComponent),
   },
 ];

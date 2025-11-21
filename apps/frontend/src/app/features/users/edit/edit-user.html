@@ -1,0 +1,85 @@
+<p-button label="Edit" icon="pi pi-pencil" size="small" (click)="editUser()">
+</p-button>
+
+<p-dialog
+  [header]="'Edit user'"
+  [visible]="displayDialog()"
+  (visibleChange)="displayDialog.set($event)"
+  [modal]="true"
+  [dismissableMask]="true"
+  [style]="{ 'width': '25rem', 'max-width': 'calc(100vw - 3rem)' }"
+>
+  <form [formGroup]="editUserForm" (ngSubmit)="saveUser()" class="text-left">
+    <div class="p-field mb-3">
+      <label for="name" class="block text-xs font-medium mb-1">Name</label>
+      <input
+        pInputText
+        id="name"
+        class="w-full"
+        formControlName="name"
+        [invalid]="shouldDisplayError(editUserForm.get('name'))"
+      />
+      @if (shouldDisplayError(editUserForm.get('name'))) {
+      <div class="text-red-300 text-xs mt-1">Name is required.</div>
+      }
+    </div>
+    <div class="p-field mb-3">
+      <label for="username" class="block text-xs font-medium mb-1"
+        >Username</label
+      >
+      <input
+        pInputText
+        id="username"
+        class="w-full"
+        formControlName="username"
+        [invalid]="shouldDisplayError(editUserForm.get('username'))"
+      />
+      @if (shouldDisplayError(editUserForm.get('username'))) {
+      <div class="text-red-300 text-xs mt-1">
+        @if (editUserForm.get('username')?.errors?.['required']) { Username is
+        required. } @if (editUserForm.get('username')?.errors?.['noSpace']) {
+        Username cannot contain spaces. }
+      </div>
+      }
+    </div>
+    <div class="p-field mb-3">
+      <label for="password" class="block text-xs font-medium mb-1"
+        >Update password</label
+      >
+      <input
+        pInputText
+        type="password"
+        id="password"
+        class="w-full"
+        formControlName="password"
+        autocomplete="new-password"
+        [invalid]="shouldDisplayError(editUserForm.get('password'))"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="role" class="block text-xs font-medium mb-1">Role</label>
+      <p-select
+        id="role"
+        class="w-full"
+        formControlName="isAdmin"
+        [options]="roleOptions()"
+        placeholder="Select..."
+        appendTo="body"
+        [invalid]="shouldDisplayError(editUserForm.get('isAdmin'))"
+      ></p-select>
+      @if (shouldDisplayError(editUserForm.get('isAdmin'))) {
+      <div class="text-red-300 text-xs mt-1">Role is required.</div>
+      }
+    </div>
+
+    <div class="p-dialog-footer flex gap-2 mt-4 px-0">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="closeDialog()"
+        type="button"
+      ></p-button>
+      <p-button label="Save" type="submit"></p-button>
+    </div>
+  </form>
+</p-dialog>

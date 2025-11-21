@@ -1,0 +1,45 @@
+<div class="flex gap-2 justify-content-between align-items-center mb-4">
+  <h1>Hello, {{ currentUser()?.name }}!</h1>
+  <dcc-logout class="block"></dcc-logout>
+</div>
+
+<div class="flex gap-2 justify-content-between align-items-center">
+  <h2>{{ currentUser()?.isAdmin ? 'Manage users' : 'Listing all users' }}</h2>
+
+  @if (currentUser()?.isAdmin) {
+  <dcc-create-user></dcc-create-user>
+  }
+</div>
+
+<!-- TODO make table responsible (with content inside rows shifted vertically on Mobile) -->
+<p-table [value]="users()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Role</th>
+
+      @if (currentUser()?.isAdmin) {
+      <th></th>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ displayUserRole(user.isAdmin) }}</td>
+
+      @if (currentUser()?.isAdmin) {
+      <td class="text-right w-3">
+        @if (user.id !== currentUser()?.id) {
+        <dcc-delete-user [user]="user"></dcc-delete-user>
+        }
+
+        <dcc-edit-user [user]="user"></dcc-edit-user>
+      </td>
+      }
+    </tr>
+  </ng-template>
+</p-table>

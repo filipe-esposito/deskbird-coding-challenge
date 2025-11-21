@@ -1,0 +1,93 @@
+<p-button
+  (click)="addUser()"
+  label="Add user"
+  size="small"
+  icon="pi pi-plus"
+  severity="success"
+></p-button>
+
+<p-dialog
+  [header]="'Add new user'"
+  [visible]="displayDialog()"
+  (visibleChange)="displayDialog.set($event)"
+  [modal]="true"
+  [dismissableMask]="true"
+  [style]="{ 'width': '25rem', 'max-width': 'calc(100vw - 3rem)' }"
+>
+  <form [formGroup]="createUserForm" (ngSubmit)="saveUser()">
+    <div class="p-field mb-3">
+      <label for="name" class="block text-xs font-medium mb-1">Name</label>
+      <input
+        pInputText
+        id="name"
+        class="w-full"
+        formControlName="name"
+        [invalid]="shouldDisplayError(createUserForm.get('name'))"
+      />
+      @if (shouldDisplayError(createUserForm.get('name'))) {
+      <div class="text-red-300 text-xs mt-1">Name is required.</div>
+      }
+    </div>
+    <div class="p-field mb-3">
+      <label for="username" class="block text-xs font-medium mb-1"
+        >Username</label
+      >
+      <input
+        pInputText
+        id="username"
+        class="w-full"
+        formControlName="username"
+        [invalid]="shouldDisplayError(createUserForm.get('username'))"
+      />
+      @if (shouldDisplayError(createUserForm.get('username'))) {
+      <div class="text-red-300 text-xs mt-1">
+        @if (createUserForm.get('username')?.errors?.['required']) { Username is
+        required. } @if (createUserForm.get('username')?.errors?.['noSpace']) {
+        Username cannot contain spaces. }
+      </div>
+      }
+    </div>
+    <div class="p-field mb-3">
+      <label for="password" class="block text-xs font-medium mb-1"
+        >Password</label
+      >
+      <input
+        pInputText
+        type="password"
+        id="password"
+        class="w-full"
+        formControlName="password"
+        autocomplete="new-password"
+        [invalid]="shouldDisplayError(createUserForm.get('password'))"
+      />
+      @if (shouldDisplayError(createUserForm.get('password'))) {
+      <div class="text-red-300 text-xs mt-1">Password is required.</div>
+      }
+    </div>
+    <div class="p-field mb-3">
+      <label for="role" class="block text-xs font-medium mb-1">Role</label>
+      <p-select
+        id="role"
+        class="w-full"
+        formControlName="isAdmin"
+        [options]="roleOptions()"
+        placeholder="Select..."
+        appendTo="body"
+        [invalid]="shouldDisplayError(createUserForm.get('isAdmin'))"
+      ></p-select>
+      @if (shouldDisplayError(createUserForm.get('isAdmin'))) {
+      <div class="text-red-300 text-xs mt-1">Role is required.</div>
+      }
+    </div>
+
+    <div class="p-dialog-footer flex gap-2 mt-4 px-0">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="closeDialog()"
+        type="button"
+      ></p-button>
+      <p-button label="Create" type="submit"></p-button>
+    </div>
+  </form>
+</p-dialog>

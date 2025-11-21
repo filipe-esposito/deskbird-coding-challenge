@@ -1,0 +1,31 @@
+<p-button
+  label="Delete"
+  icon="pi pi-trash"
+  severity="danger"
+  size="small"
+  class="mr-2"
+  (click)="confirmDeleteUser()"
+></p-button>
+
+<p-dialog
+  header="Confirm deletion"
+  [visible]="displayDialog()"
+  (visibleChange)="displayDialog.set($event)"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <div>Are you sure you want to delete user <b>{{ user()?.name }}</b>?</div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (click)="cancelDeleteUser()"
+    ></p-button>
+    <p-button
+      label="Delete"
+      severity="danger"
+      (click)="deleteUserConfirmed()"
+    ></p-button>
+  </ng-template>
+</p-dialog>
