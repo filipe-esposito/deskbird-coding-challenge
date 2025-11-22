@@ -17,8 +17,8 @@ import { Subscription } from 'rxjs';
   imports: [ReactiveFormsModule, ButtonModule, InputTextModule],
 })
 export class LoginFormComponent implements OnDestroy {
-  private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
 
   loginForm: FormGroup = this.fb.group({
     username: ['', Validators.required],

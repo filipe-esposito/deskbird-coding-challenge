@@ -7,7 +7,7 @@
   <h2>{{ currentUser()?.isAdmin ? 'Manage users' : 'Listing all users' }}</h2>
 
   @if (currentUser()?.isAdmin) {
-  <dcc-create-user></dcc-create-user>
+  <dcc-create-user data-testid="create-user-btn"></dcc-create-user>
   }
 </div>
 
@@ -34,10 +34,16 @@
       @if (currentUser()?.isAdmin) {
       <td class="text-right w-3">
         @if (user.id !== currentUser()?.id) {
-        <dcc-delete-user [user]="user"></dcc-delete-user>
+        <dcc-delete-user
+          [user]="user"
+          data-testid="delete-user-btn"
+        ></dcc-delete-user>
         }
 
-        <dcc-edit-user [user]="user"></dcc-edit-user>
+        <dcc-edit-user
+          [user]="user"
+          data-testid="edit-user-btn"
+        ></dcc-edit-user>
       </td>
       }
     </tr>

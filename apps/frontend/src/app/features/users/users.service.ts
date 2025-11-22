@@ -17,13 +17,6 @@ export class UsersService {
     this.refreshUsers();
   }
 
-  refreshUsers() {
-    this.http.get<IUser[]>(this.usersApiUrl).subscribe({
-      next: (users) => this.users.set(users),
-      error: () => this.users.set([]),
-    });
-  }
-
   getUsers(): Signal<IUser[]> {
     return this.users.asReadonly();
   }
@@ -47,6 +40,13 @@ export class UsersService {
 
     this.http.delete<void>(deleteUserApiUrl).subscribe({
       next: () => this.refreshUsers(),
+    });
+  }
+
+  private refreshUsers() {
+    this.http.get<IUser[]>(this.usersApiUrl).subscribe({
+      next: (users) => this.users.set(users),
+      error: () => this.users.set([]),
     });
   }
 }

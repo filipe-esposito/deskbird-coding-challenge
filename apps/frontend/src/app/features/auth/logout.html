@@ -4,6 +4,7 @@
   size="small"
   icon="pi pi-sign-out"
   severity="danger"
+  data-testid="logout-button"
 ></p-button>
 
 <p-dialog
@@ -11,6 +12,7 @@
   [visible]="displayDialog()"
   modal="true"
   [closable]="false"
+  data-testid="confirm-logout-dialog"
 >
   <p>Are you sure you want to logout?</p>
 
@@ -20,12 +22,14 @@
       icon="pi pi-check"
       severity="danger"
       (click)="logoutConfirmed()"
+      data-testid="confirm-logout-button"
     ></p-button>
     <p-button
       label="No"
       icon="pi pi-times"
       severity="secondary"
       (click)="displayDialog.set(false)"
+      data-testid="cancel-logout-button"
     ></p-button>
   </ng-template>
 </p-dialog>

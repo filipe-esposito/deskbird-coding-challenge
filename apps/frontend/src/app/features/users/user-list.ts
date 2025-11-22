@@ -9,7 +9,7 @@ import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { AuthService } from '../auth/auth.service';
 import { LogoutComponent } from '../auth/logout';
 import { EditUserComponent } from './edit/edit-user';
-import { roleOptions, shouldDisplayError } from '../../shared/utils/form';
+import { roleOptions } from '../../shared/utils/form';
 import { DeleteUserComponent } from './delete/delete-user';
 import { CreateUserComponent } from './create/create-user';
 
@@ -37,7 +37,6 @@ export class UserListComponent {
   currentUser: Signal<IUser | null> = this.authService.getCurrentUser();
 
   readonly roleOptions = roleOptions;
-  readonly shouldDisplayError = shouldDisplayError;
 
   displayUserRole(isAdmin: boolean): string {
     return (
