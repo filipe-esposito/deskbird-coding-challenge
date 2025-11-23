@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../user/entities/user.entity';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>
@@ -18,9 +18,7 @@ export class LoginService {
     });
 
     if (!user) {
-      throw new UnauthorizedException(
-        'Invalid username or password. Please try again.'
-      );
+      throw new UnauthorizedException(this.genericAuthErrorMessage);
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -29,11 +27,12 @@ export class LoginService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException(
-        'Invalid username or password. Please try again.'
-      );
+      throw new UnauthorizedException(this.genericAuthErrorMessage);
     }
 
     return user;
   }
+
+  private genericAuthErrorMessage =
+    'Invalid username or password. Please try again.';
 }

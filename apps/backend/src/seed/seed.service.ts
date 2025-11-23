@@ -11,7 +11,7 @@ export class SeedService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  async run() {
+  async run(): Promise<void> {
     await this.userRepository.clear();
 
     const baseAdminUser: User = {
