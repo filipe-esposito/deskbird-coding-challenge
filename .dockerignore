@@ -1,0 +1,11 @@
+node_modules
+dist
+.nx
+.angular
+coverage
+test-output
+.git
+.vscode
+.cursor
+*.log
+.DS_Store
