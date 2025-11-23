@@ -1,15 +1,19 @@
 import { signal } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
-export function shouldDisplayError(control: AbstractControl | null) {
-  return control && control.invalid && (control.dirty || control.touched);
+export function shouldDisplayError(control: AbstractControl | null): boolean {
+  return !!(control && control.invalid && (control.dirty || control.touched));
 }
 
-export function noSpaceValidator(control: AbstractControl) {
+export function noSpaceValidator(control: AbstractControl): {
+  noSpace: boolean;
+} | null {
   const value = control.value as string;
+
   if (value && value.includes(' ')) {
     return { noSpace: true };
   }
+
   return null;
 }
 
