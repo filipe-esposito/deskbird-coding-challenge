@@ -10,7 +10,7 @@ import {
 } from '../../shared/utils/unit-tests';
 import { IUser } from '@deskbird-coding-challenge/shared-lib';
 
-const mockUsers = [
+const mockUsers: IUser[] = [
   { id: 1, name: 'Alice', username: 'alice@example.com', isAdmin: false },
   { id: 2, name: 'Bob', username: 'bob@example.com', isAdmin: true },
 ];
