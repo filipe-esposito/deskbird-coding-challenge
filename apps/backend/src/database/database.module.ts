@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../features/user/entities/user.entity';
 
+// TODO move credentials to a safe place
 @Module({
   imports: [
     TypeOrmModule.forRoot({
