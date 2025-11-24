@@ -8,6 +8,7 @@ import { select, Store } from '@ngrx/store';
 import * as AuthActions from './store/auth.actions';
 import { selectAuthUser } from './store/auth.selectors';
 
+// TODO cover with unit tests when NgRx-related code is also covered
 @Injectable({
   providedIn: 'root',
 })
