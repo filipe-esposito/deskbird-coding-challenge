@@ -1,5 +1,5 @@
 import { DeleteUserComponent } from './delete-user';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,15 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('DeleteUserComponent', () => {
   let fixture: ComponentFixture<DeleteUserComponent>;
   let component: DeleteUserComponent;
-  const usersServiceSpy = { deleteUser: jest.fn() };
+  const userServiceSpy = { deleteUser: jest.fn() };
 
   beforeEach(async () => {
-    usersServiceSpy.deleteUser.mockClear();
+    userServiceSpy.deleteUser.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [DeleteUserComponent],
       providers: [
-        { provide: UsersService, useValue: usersServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
         importProvidersFrom(BrowserAnimationsModule),
       ],
     }).compileComponents();
@@ -39,16 +39,16 @@ describe('DeleteUserComponent', () => {
     it('should call service method for deleting the user with the correct id', () => {
       const userId = 42;
       fixture.componentRef.setInput('user', { id: userId, name: 'Test User' });
-      usersServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.deleteUserConfirmed();
 
-      expect(usersServiceSpy.deleteUser).toHaveBeenCalledWith(userId);
+      expect(userServiceSpy.deleteUser).toHaveBeenCalledWith(userId);
     });
 
     it('should close the confirmation dialog', () => {
       fixture.componentRef.setInput('user', { id: 42, name: 'Test User' });
-      usersServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.deleteUserConfirmed();
 
@@ -62,12 +62,12 @@ describe('DeleteUserComponent', () => {
 
       component.cancelDeleteUser();
 
-      expect(usersServiceSpy.deleteUser).not.toHaveBeenCalled();
+      expect(userServiceSpy.deleteUser).not.toHaveBeenCalled();
     });
 
     it('should close the confirmation dialog', () => {
       fixture.componentRef.setInput('user', { id: 42, name: 'Test User' });
-      usersServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.deleteUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.cancelDeleteUser();
 

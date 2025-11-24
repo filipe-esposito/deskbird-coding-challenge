@@ -3,13 +3,13 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { BASE_API_URL } from '../../app.config';
 
-// TODO add NgRx to the `users` feature and update unit tests accordingly
-describe('UsersService', () => {
-  let service: UsersService;
+// TODO add NgRx to the `user` feature and update unit tests accordingly
+describe('UserService', () => {
+  let service: UserService;
   let httpMock: HttpTestingController;
 
   const usersApiUrl = `${BASE_API_URL}/users`;
@@ -22,10 +22,10 @@ describe('UsersService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [UsersService],
+      providers: [UserService],
     });
 
-    service = TestBed.inject(UsersService);
+    service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
 
     // Flush the initial GET request from constructor

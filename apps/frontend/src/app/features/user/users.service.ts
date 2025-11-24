@@ -6,8 +6,8 @@ import { BASE_API_URL } from '../../app.config';
 @Injectable({
   providedIn: 'root',
 })
-// TODO add NgRx to the `users` feature and update this service accordingly
-export class UsersService {
+// TODO add NgRx to the `user` feature and update this service accordingly
+export class UserService {
   private http = inject(HttpClient);
   private usersApiUrl = `${BASE_API_URL}/users`;
 

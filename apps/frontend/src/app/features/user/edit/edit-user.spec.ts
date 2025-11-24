@@ -1,5 +1,5 @@
 import { EditUserComponent } from './edit-user';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,15 +15,15 @@ const userData = {
 describe('EditUserComponent', () => {
   let fixture: ComponentFixture<EditUserComponent>;
   let component: EditUserComponent;
-  const usersServiceSpy = { updateUser: jest.fn() };
+  const userServiceSpy = { updateUser: jest.fn() };
 
   beforeEach(async () => {
-    usersServiceSpy.updateUser.mockClear();
+    userServiceSpy.updateUser.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [EditUserComponent],
       providers: [
-        { provide: UsersService, useValue: usersServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
         importProvidersFrom(BrowserAnimationsModule),
       ],
     }).compileComponents();
@@ -61,15 +61,15 @@ describe('EditUserComponent', () => {
     });
 
     it('should call service method for updating a user with the correct data', () => {
-      usersServiceSpy.updateUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.updateUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.saveUser();
 
-      expect(usersServiceSpy.updateUser).toHaveBeenCalledWith(userData);
+      expect(userServiceSpy.updateUser).toHaveBeenCalledWith(userData);
     });
 
     it('should close the dialog', () => {
-      usersServiceSpy.updateUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.updateUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.saveUser();
 
@@ -77,7 +77,7 @@ describe('EditUserComponent', () => {
     });
 
     it('should reset the form after successful update', () => {
-      usersServiceSpy.updateUser.mockReturnValue({
+      userServiceSpy.updateUser.mockReturnValue({
         subscribe: (handlers: any) => handlers.next({ ...userData }),
       });
 
@@ -103,7 +103,7 @@ describe('EditUserComponent', () => {
 
       component.saveUser();
 
-      expect(usersServiceSpy.updateUser).not.toHaveBeenCalled();
+      expect(userServiceSpy.updateUser).not.toHaveBeenCalled();
     });
   });
 });

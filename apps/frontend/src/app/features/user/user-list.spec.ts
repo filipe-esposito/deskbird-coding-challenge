@@ -1,5 +1,5 @@
 import { UserListComponent } from './user-list';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { AuthService } from '../auth/auth.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { importProvidersFrom } from '@angular/core';
@@ -15,7 +15,7 @@ const mockUsers: IUser[] = [
   { id: 2, name: 'Bob', username: 'bob@example.com', isAdmin: true },
 ];
 
-const usersServiceSpy = {
+const userServiceSpy = {
   getUsers: jest.fn(),
 };
 const authServiceSpy = {
@@ -27,13 +27,13 @@ describe('UserListComponent', () => {
   let component: UserListComponent;
 
   beforeEach(async () => {
-    usersServiceSpy.getUsers.mockClear();
+    userServiceSpy.getUsers.mockClear();
     authServiceSpy.getCurrentUser.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [UserListComponent],
       providers: [
-        { provide: UsersService, useValue: usersServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
         importProvidersFrom(BrowserAnimationsModule),
       ],
@@ -151,7 +151,7 @@ function configureFixtureWithCurrentUser(
   currentUser: IUser
 ): ComponentFixture<UserListComponent> {
   authServiceSpy.getCurrentUser.mockReturnValue(() => currentUser);
-  usersServiceSpy.getUsers.mockReturnValue(() => mockUsers);
+  userServiceSpy.getUsers.mockReturnValue(() => mockUsers);
   const fixture = TestBed.createComponent(UserListComponent);
   fixture.detectChanges();
 

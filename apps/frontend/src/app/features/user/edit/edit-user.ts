@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 import {
   noSpaceValidator,
   roleOptions,
@@ -29,7 +29,7 @@ import {
   ],
 })
 export class EditUserComponent {
-  private usersService = inject(UsersService);
+  private userService = inject(UserService);
   private fb = inject(FormBuilder);
 
   user = input<IUser>();
@@ -71,7 +71,7 @@ export class EditUserComponent {
     const formValue = this.editUserForm.value satisfies IUser;
 
     const userToUpdate = { ...this.user(), ...formValue };
-    this.usersService.updateUser(userToUpdate);
+    this.userService.updateUser(userToUpdate);
 
     this.closeDialog();
   }

@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 import {
   noSpaceValidator,
   roleOptions,
@@ -29,7 +29,7 @@ import {
   ],
 })
 export class CreateUserComponent {
-  private usersService = inject(UsersService);
+  private userService = inject(UserService);
   private fb = inject(FormBuilder);
 
   displayDialog = signal(false);
@@ -61,7 +61,7 @@ export class CreateUserComponent {
     }
 
     const formValue = this.createUserForm.value satisfies IUser;
-    this.usersService.addUser(formValue);
+    this.userService.addUser(formValue);
 
     this.closeDialog();
   }

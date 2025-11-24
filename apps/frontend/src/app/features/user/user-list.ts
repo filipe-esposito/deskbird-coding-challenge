@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { AuthService } from '../auth/auth.service';
 import { LogoutComponent } from '../auth/logout';
@@ -29,10 +29,10 @@ import { CreateUserComponent } from './create/create-user';
   ],
 })
 export class UserListComponent {
-  private usersService = inject(UsersService);
+  private userService = inject(UserService);
   private authService = inject(AuthService);
 
-  users: Signal<IUser[]> = this.usersService.getUsers();
+  users: Signal<IUser[]> = this.userService.getUsers();
 
   currentUser: Signal<IUser | null> = this.authService.getCurrentUser();
 

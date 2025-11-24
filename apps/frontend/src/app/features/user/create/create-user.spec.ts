@@ -1,5 +1,5 @@
 import { CreateUserComponent } from './create-user';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,15 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 describe('CreateUserComponent', () => {
   let fixture: ComponentFixture<CreateUserComponent>;
   let component: CreateUserComponent;
-  const usersServiceSpy = { addUser: jest.fn() };
+  const userServiceSpy = { addUser: jest.fn() };
 
   beforeEach(async () => {
-    usersServiceSpy.addUser.mockClear();
+    userServiceSpy.addUser.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [CreateUserComponent],
       providers: [
-        { provide: UsersService, useValue: usersServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
         importProvidersFrom(BrowserAnimationsModule),
       ],
     }).compileComponents();
@@ -44,11 +44,11 @@ describe('CreateUserComponent', () => {
         isAdmin: true,
       };
       component.createUserForm.setValue(userData);
-      usersServiceSpy.addUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.addUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.saveUser();
 
-      expect(usersServiceSpy.addUser).toHaveBeenCalledWith(userData);
+      expect(userServiceSpy.addUser).toHaveBeenCalledWith(userData);
     });
 
     it('should close the dialog', () => {
@@ -59,7 +59,7 @@ describe('CreateUserComponent', () => {
         isAdmin: true,
       };
       component.createUserForm.setValue(userData);
-      usersServiceSpy.addUser.mockReturnValue({ subscribe: jest.fn() });
+      userServiceSpy.addUser.mockReturnValue({ subscribe: jest.fn() });
 
       component.saveUser();
 
@@ -74,7 +74,7 @@ describe('CreateUserComponent', () => {
         isAdmin: true,
       };
       component.createUserForm.setValue(userData);
-      usersServiceSpy.addUser.mockReturnValue({
+      userServiceSpy.addUser.mockReturnValue({
         subscribe: (handlers: any) => handlers.next({ id: 1, ...userData }),
       });
 
@@ -100,7 +100,7 @@ describe('CreateUserComponent', () => {
 
       component.saveUser();
 
-      expect(usersServiceSpy.addUser).not.toHaveBeenCalled();
+      expect(userServiceSpy.addUser).not.toHaveBeenCalled();
     });
   });
 });

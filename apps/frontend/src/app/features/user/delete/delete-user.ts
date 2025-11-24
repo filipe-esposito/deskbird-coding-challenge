@@ -2,7 +2,7 @@ import { Component, inject, input, signal } from '@angular/core';
 import { IUser } from '@deskbird-coding-challenge/shared-lib';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { UsersService } from '../users.service';
+import { UserService } from '../users.service';
 
 @Component({
   selector: 'dcc-delete-user',
@@ -10,7 +10,7 @@ import { UsersService } from '../users.service';
   imports: [ButtonModule, DialogModule],
 })
 export class DeleteUserComponent {
-  private usersService = inject(UsersService);
+  private userService = inject(UserService);
 
   user = input<IUser>();
 
@@ -23,7 +23,7 @@ export class DeleteUserComponent {
   deleteUserConfirmed() {
     const user = this.user();
     if (user && user?.id) {
-      this.usersService.deleteUser(user.id);
+      this.userService.deleteUser(user.id);
     }
 
     this.displayDialog.set(false);
